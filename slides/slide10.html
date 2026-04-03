@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Let's Connect - PACE Research</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, transparent 70%);
+            top: -200px;
+            right: -100px;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            bottom: -100px;
+            left: -50px;
+            filter: blur(50px);
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            /* 20px */
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            /* 24px */
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #00a8ff;
+        }
+
+        .status-badge {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            top: 100px;
+            left: 60px;
+            right: 60px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 5;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            /* 36px */
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            /* 14px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .publication-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 1.125rem;
+            /* 18px */
+        }
+
+        .card-title {
+            font-size: 1rem;
+            /* 16px */
+            font-weight: 600;
+            color: white;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .status-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00a8ff;
+            flex: 0 0 auto;
+        }
+
+        .status-dot.pending {
+            background: #f59e0b;
+        }
+
+        .status-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.2;
+        }
+
+        .status-value {
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 500;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .links-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .link-item:hover {
+            background: rgba(0, 168, 255, 0.1);
+        }
+
+        .link-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 0.875rem;
+            /* 14px */
+            flex: 0 0 auto;
+        }
+
+        .link-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .link-title {
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 500;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .link-desc {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.2;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cta-card {
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.1) 0%, rgba(0, 168, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cta-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .cta-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 168, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 1.125rem;
+            /* 18px */
+        }
+
+        .cta-title {
+            font-size: 1rem;
+            /* 16px */
+            font-weight: 600;
+            color: white;
+        }
+
+        .cta-text {
+            font-size: 0.875rem;
+            /* 14px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #00a8ff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            margin-top: 8px;
+            align-self: flex-start;
+        }
+
+        .cta-button:hover {
+            background: #0066ff;
+        }
+
+        .collaboration-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .collab-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .collab-icon {
+            font-size: 1.25rem;
+            /* 20px */
+            color: #00a8ff;
+            margin-bottom: 8px;
+        }
+
+        .collab-text {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-highlight {
+            color: #00a8ff;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-2"></div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">PACE <span>Research</span></div>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-users" style="margin-right: 4px;"></i>
+                Open Source
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="title-section">
+                <div class="main-title">Research &amp; <span class="highlight">Open Source</span></div>
+                <div class="subtitle">
+                    Join the community, contribute to the project, or explore our research and documentation
+                </div>
+            </div>
+            <div class="content-grid">
+                <div class="left-panel">
+                    <div class="publication-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="card-title">Publication Status</div>
+                        </div>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <div class="status-dot"></div>
+                                <div class="status-info">
+                                    <div class="status-label">arXiv</div>
+                                    <div class="status-value">Coming Soon</div>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-dot pending"></div>
+                                <div class="status-info">
+                                    <div class="status-label">Review</div>
+                                    <div class="status-value">SoftwareX / JOSS</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="links-section">
+                            <a class="link-item" href="https://github.com/muhammedshahid/pace" target="_blank">
+                                <div class="link-icon">
+                                    <i class="fab fa-github"></i>
+                                </div>
+                                <div class="link-text">
+                                    <div class="link-title">GitHub Repository</div>
+                                    <div class="link-desc">Source code and documentation</div>
+                                </div>
+                                <i class="fas fa-external-link-alt" style="color: rgba(255,255,255,0.3);"></i>
+                            </a>
+                            <a class="link-item" href="https://muhammedshahid.github.io/pace/src/" target="_blank">
+                                <div class="link-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="link-text">
+                                    <div class="link-title">Live Demo</div>
+                                    <div class="link-desc">Interactive demonstration</div>
+                                </div>
+                                <i class="fas fa-external-link-alt" style="color: rgba(255,255,255,0.3);"></i>
+                            </a>
+                            <a class="link-item" href="https://doi.org/10.5281/zenodo.19203394" target="_blank">
+                                <div class="link-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="link-text">
+                                    <div class="link-title">Zenodo Archive</div>
+                                    <div class="link-desc">Research data and releases</div>
+                                </div>
+                                <i class="fas fa-external-link-alt" style="color: rgba(255,255,255,0.3);"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-panel">
+                    <div class="cta-card">
+                        <div class="cta-header">
+                            <div class="cta-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="cta-title">Let's Collaborate</div>
+                        </div>
+                        <div class="cta-text">
+                            We're open to feedback, contributions, and collaborations. Whether you're a researcher,
+                            developer, or enthusiast, we'd love to hear from you.
+                        </div>
+                        <a href="https://github.com/muhammedshahid/pace" target="_blank">
+                            <button class="cta-button">
+                                <i class="fas fa-envelope"></i>
+                                Get in Touch
+                            </button>
+                        </a>
+                        <div class="collaboration-grid">
+                            <div class="collab-item">
+                                <div class="collab-icon">
+                                    <i class="fas fa-bug"></i>
+                                </div>
+                                <div class="collab-text">Bug Reports</div>
+                            </div>
+                            <div class="collab-item">
+                                <div class="collab-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="collab-text">Contributions</div>
+                            </div>
+                            <div class="collab-item">
+                                <div class="collab-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="collab-text">Feature Ideas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-text">
+                <span class="footer-highlight">💬</span> Open to feedback &amp; collaboration
+            </div>
+        </div>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>

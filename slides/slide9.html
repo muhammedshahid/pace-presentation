@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PACE Built for Scale - PACE Research</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+        
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, transparent 70%);
+            top: -160px;
+            right: -80px;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            bottom: -20px;
+            left: -20px;
+            filter: blur(50px);
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #00a8ff;
+        }
+
+        .status-badge {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            top: 100px;
+            left: 60px;
+            right: 60px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 5;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            flex: 1;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 168, 255, 0.5) 50%, transparent 100%);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+
+        .feature-dot {
+            width: 6px;
+            height: 6px;
+            background: #00a8ff;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .deployment-info {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .deployment-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 168, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .deployment-text {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-highlight {
+            color: #00a8ff;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-2"></div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">PACE <span>Research</span></div>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-rocket" style="margin-right: 4px;"></i>
+                Built for Scale
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="title-section">
+                <div class="main-title">PACE is <span class="highlight">Built for Scale</span></div>
+                <div class="subtitle">
+                    Real–world capabilities: real–time performance, universal distribution, and ML pipeline readiness
+                </div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="feature-title">Real–time Performance</div>
+                    </div>
+                    <div class="feature-desc">
+                        Optimized for speed and efficiency in production environments
+                    </div>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>Browser/WebGPU:</strong> Native browser support with
+                                WebGPU acceleration</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>60+ FPS:</strong> Smooth performance for real–time
+                                applications</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>Low Latency:</strong> Minimal processing delay for
+                                interactive use</div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-value">60+</div>
+                            <div class="stat-label">FPS</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">&lt;16ms</div>
+                            <div class="stat-label">Latency</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="feature-title">Universal Distribution</div>
+                    </div>
+                    <div class="feature-desc">
+                        Deploy anywhere with flexible distribution options
+                    </div>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>CDN:</strong> Global content delivery network ready</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>ESM:</strong> ES Module support for modern bundlers</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>CLI:</strong> Command–line interface for automation</div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-value">99.9%</div>
+                            <div class="stat-label">Uptime</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">Global</div>
+                            <div class="stat-label">CDN</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-title">ML Pipeline Ready</div>
+                    </div>
+                    <div class="feature-desc">
+                        Seamlessly integrate with CV and ML workflows
+                    </div>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>CV Ready:</strong> Computer vision pipeline compatible
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>Batch + Streaming:</strong> Support for both processing
+                                modes</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-dot"></div>
+                            <div class="feature-text"><strong>API Integration:</strong> RESTful API for easy integration
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-value">50+</div>
+                            <div class="stat-label">Models</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">Compatible</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="deployment-info">
+                <div class="deployment-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="deployment-text">
+                    <strong>Ready for Production:</strong> PACE is tested and optimized for real–world deployment
+                    scenarios
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-text">
+                <span class="footer-highlight"> ⚡ Real-time</span> • <span class="footer-highlight">🌐 Universal</span> •
+                <span class="footer-highlight">🧠 ML Ready</span>
+            </div>
+        </div>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>

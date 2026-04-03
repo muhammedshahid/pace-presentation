@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Warning for Researchers - PACE</title>
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+
+        .warning-icon {
+            position: absolute;
+            left: 80px;
+            top: 60px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        .warning-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .title {
+            position: absolute;
+            left: 160px;
+            top: 70px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .warning-badge {
+            position: absolute;
+            right: 80px;
+            top: 70px;
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid rgba(255, 107, 53, 0.5);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            color: #ff6b35;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            left: 80px;
+            top: 150px;
+            width: 1120px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .left-column {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .problem-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .problem-text {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .metrics-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .metric-tag {
+            background: rgba(255, 107, 53, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+            color: #ff6b35;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(14, 165, 233, 0.05) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .cta-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0EA5E9;
+            margin-bottom: 8px;
+        }
+
+        .cta-text {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #0EA5E9;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        a,
+        a:visited,
+        a:hover,
+        a:active {
+            color: inherit;
+            text-decoration: none;
+            cursor: inherit;
+        }
+
+        .action-button:hover {
+            background: #0284c7;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 80px;
+            right: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #0EA5E9;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="warning-icon" data-object="true" data-object-type="icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1 class="title" data-object="true" data-object-type="textbox">A Warning for Researchers</h1>
+        <div class="warning-badge" data-object="true" data-object-type="textbox">
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
+            Critical Insight
+        </div>
+        <div class="main-content" data-object="true" data-object-type="textbox">
+            <div class="left-column">
+                <div class="problem-title">
+                    <i class="fas fa-chart-line" style="color: #ff6b35;"></i>
+                    The Metric Trap
+                </div>
+                <p class="problem-text">
+                    Traditional no-reference metrics like <strong style="color: #ff6b35;">NIQE</strong>, <strong
+                        style="color: #ff6b35;">BRISQUE</strong>, and <strong style="color: #ff6b35;">PIQE</strong>
+                    don't fully reflect human perception. These metrics optimize for numerical scores rather than visual
+                    quality.
+                </p>
+                <div class="metrics-list">
+                    <div class="metric-tag">NIQE</div>
+                    <div class="metric-tag">BRISQUE</div>
+                    <div class="metric-tag">PIQE</div>
+                    <div class="metric-tag">NIMA</div>
+                </div>
+                <div class="problem-text" style="margin-top: 16px;">
+                    <strong style="color: #0EA5E9;">Key Issue:</strong> Images that score high on these metrics often
+                    look unnatural to human observers, with artifacts like over–smoothing and halo effects.
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="problem-card">
+                    <div class="problem-title">
+                        <i class="fas fa-eye" style="color: #0EA5E9;"></i>
+                        The Perception Gap
+                    </div>
+                    <p class="problem-text">
+                        Current evaluation methods focus on statistical measures rather than human visual experience. We
+                        need perception-aware systems that prioritize natural–looking results.
+                    </p>
+                </div>
+                <div class="cta-box">
+
+                    <div class="cta-title">
+                        <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>
+                        Call to Action
+                    </div>
+
+                    <p class="cta-text">
+                        Build and evaluate with perception–aware systems and user studies. Move beyond score–chasing to
+                        create truly better visual experiences.
+                    </p>
+
+                    <a href="https://github.com/muhammedshahid/pace/blob/main/paper/README.md" target="_blank">
+                        <div class="action-button">
+                            <i class="fas fa-arrow-right"></i>
+                            Learn More About PACE
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer" data-object="true" data-object-type="textbox">
+            <div class="footer-text">
+                <i class="fas fa-clock" style="margin-right: 8px;"></i>
+                Last updated: 2026
+            </div>
+            <div class="footer-links">
+                <a class="footer-link" href="https://github.com/muhammedshahid/pace/" target="_blank"><i
+                        class="fab fa-github"></i> GitHub
+                </a>
+                <a class="footer-link" href="https://muhammedshahid.github.io/pace/" target="_blank"><i
+                        class="fas fa-book"></i> Documentation
+                </a>
+                <a class="footer-link" href="https://muhammedshahid.github.io/pace/#-contact" target="_blank"><i
+                        class="fas fa-envelope"></i> Contact
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>

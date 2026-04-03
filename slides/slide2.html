@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>The Metric Trap - PACE Research</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.08) 0%, transparent 70%);
+            top: -150px;
+            left: -100px;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            bottom: -100px;
+            right: -50px;
+            filter: blur(50px);
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            /* 20px */
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            /* 24px */
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #00a8ff;
+        }
+
+        .status-badge {
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: #ff6b00;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            top: 100px;
+            left: 60px;
+            right: 60px;
+            bottom: 80px;
+            display: flex;
+            gap: 40px;
+            z-index: 5;
+        }
+
+        .left-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            /* 36px */
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            /* 14px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .problem-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .problem-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 107, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b00;
+            font-size: 0.875rem;
+            /* 14px */
+        }
+
+        .problem-title {
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 600;
+            color: white;
+        }
+
+        .problem-text {
+            font-size: 0.8125rem;
+            /* 13px */
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+
+        .bullet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bullet-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .bullet-dot {
+            width: 6px;
+            height: 6px;
+            background: #ff6b00;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .bullet-text {
+            font-size: 0.8125rem;
+            /* 13px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .right-content {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comparison-image {
+            width: 100%;
+            height: 280px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .comparison-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-labels {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .label {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .label-robot {
+            border: 1px solid rgba(255, 107, 0, 0.5);
+        }
+
+        .label-human {
+            border: 1px solid rgba(0, 168, 255, 0.5);
+        }
+
+        .label-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .label-dot.robot {
+            background: #ff6b00;
+        }
+
+        .label-dot.human {
+            background: #00a8ff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            /* 20px */
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .key-insight {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .insight-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 168, 255, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 0.75rem;
+            /* 12px */
+        }
+
+        .insight-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .cta-container {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            /* 13px */
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 168, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-2"></div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">PACE<span> Research</span></div>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-exclamation-triangle" style="margin-right: 4px;"></i>
+                Problem Analysis
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="left-content">
+                <div class="title-section">
+                    <div class="main-title">The <span class="highlight">"Metric" Trap</span></div>
+                    <div class="subtitle">Traditional metrics like PSNR, SSIM, and NIQE say an image is "better," but to
+                        humans? It often looks unnatural.</div>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-header">
+                        <div class="problem-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="problem-title">The Disconnect Between Metrics and Perception</div>
+                    </div>
+                    <div class="problem-text">
+                        Metrics optimize for numerical scores, but they don't account for how humans actually perceive
+                        image quality.
+                    </div>
+                    <div class="bullet-list">
+                        <div class="bullet-item">
+                            <div class="bullet-dot"></div>
+                            <div class="bullet-text"><strong>PSNR (Peak Signal-to-Noise Ratio):</strong> Measures
+                                pixel-level differences, but ignores structural similarity</div>
+                        </div>
+                        <div class="bullet-item">
+                            <div class="bullet-dot"></div>
+                            <div class="bullet-text"><strong>SSIM (Structural Similarity):</strong> Better than PSNR,
+                                but still misses perceptual nuances</div>
+                        </div>
+                        <div class="bullet-item">
+                            <div class="bullet-dot"></div>
+                            <div class="bullet-text"><strong>NIQE (Natural Image Quality Evaluator):</strong>
+                                No-reference metric that doesn't fully reflect human perception</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="key-insight">
+                    <div class="insight-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="insight-text">
+                        <strong>Key Insight:</strong> The gap between metric optimization and perceptual quality is the
+                        core problem we solve.
+                    </div>
+                </div>
+            </div>
+            <div class="right-content">
+                <div class="comparison-image">
+                    <img alt="Robotic vs Human Eye" src="./imgs/slide2.jpg" />
+                    <div class="image-labels">
+                        <div class="label label-robot">
+                            <div class="label-dot robot"></div>
+                            <span>Robotic Eye (Metrics)</span>
+                        </div>
+                        <div class="label label-human">
+                            <div class="label-dot human"></div>
+                            <span>Human Eye (Perception)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">PSNR Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">92%</div>
+                        <div class="stat-label">SSIM Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">45%</div>
+                        <div class="stat-label">Perceptual</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cta-container">
+            <a href="https://github.com/muhammedshahid/pace/#%EF%B8%8F-insight-metric-limitations" target="_blank">
+                <button class="cta-button">
+                    <i class="fas fa-arrow-right"></i>
+                    Learn More
+                </button>
+            </a>
+        </div>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>

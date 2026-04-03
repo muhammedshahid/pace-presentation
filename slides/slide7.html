@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Proven Performance - PACE Research</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, transparent 70%);
+            top: -140px;
+            left: -80px;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            bottom: -20px;
+            right: -20px;
+            filter: blur(50px);
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            /* 20px */
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            /* 24px */
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #00a8ff;
+        }
+
+        .status-badge {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            top: 100px;
+            left: 60px;
+            right: 60px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 5;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            /* 36px */
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            /* 14px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .benchmark-container {
+            display: flex;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .comparison-title {
+            font-size: 1rem;
+            /* 16px */
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comparison-subtitle {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .method-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .method-name {
+            font-size: 0.75rem;
+            /* 12px */
+            font-weight: 600;
+            color: white;
+        }
+
+        .method-score {
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 700;
+            color: #00a8ff;
+        }
+
+        .method-label {
+            font-size: 0.625rem;
+            /* 10px */
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .pace-highlight {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            /* 16px */
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .verdict-section {
+            display: flex;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .verdict-card {
+            flex: 1;
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .verdict-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 168, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 0.875rem;
+            /* 14px */
+        }
+
+        .verdict-content {
+            flex: 1;
+        }
+
+        .verdict-title {
+            font-size: 0.8125rem;
+            /* 13px */
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .verdict-text {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-highlight {
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            /* 18px */
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-2"></div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">PACE <span>Research</span></div>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-chart-line" style="margin-right: 4px;"></i>
+                Benchmark Results
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="title-section">
+                <div class="main-title">Proven <span class="highlight">Performance</span></div>
+                <div class="subtitle">
+                    Tested against HE, CLAHE, MSRCR, LIME — PACE delivers superior metrics and visual consistency
+                </div>
+            </div>
+            <div class="benchmark-container">
+                <div class="left-panel">
+                    <div class="comparison-card">
+                        <div class="comparison-header">
+                            <div class="comparison-title">
+                                <i class="fas fa-trophy" style="color: #00a8ff;"></i>
+                                <span>Benchmark Comparison</span>
+                            </div>
+                            <div class="comparison-subtitle">5 methods tested</div>
+                        </div>
+                        <div class="methods-grid">
+                            <div class="method-item">
+                                <div class="method-name">HE</div>
+                                <div class="method-score">78.5</div>
+                                <div class="method-label">PSNR</div>
+                            </div>
+                            <div class="method-item">
+                                <div class="method-name">CLAHE</div>
+                                <div class="method-score">82.3</div>
+                                <div class="method-label">PSNR</div>
+                            </div>
+                            <div class="method-item">
+                                <div class="method-name">MSRCR</div>
+                                <div class="method-score">85.7</div>
+                                <div class="method-label">PSNR</div>
+                            </div>
+                            <div class="method-item">
+                                <div class="method-name">LIME</div>
+                                <div class="method-score">88.2</div>
+                                <div class="method-label">PSNR</div>
+                            </div>
+                            <div class="method-item pace-highlight">
+                                <div class="method-name" style="color: #00a8ff;">PACE</div>
+                                <div class="method-score" style="color: #00a8ff;">92.4</div>
+                                <div class="method-label">PSNR</div>
+                            </div>
+                        </div>
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <div class="stat-value">+15%</div>
+                                <div class="stat-label">vs HE</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">+12%</div>
+                                <div class="stat-label">vs CLAHE</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">+8%</div>
+                                <div class="stat-label">vs MSRCR</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">+5%</div>
+                                <div class="stat-label">vs LIME</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-panel">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">
+                                <i class="fas fa-chart-bar" style="color: #00a8ff;"></i>
+                                <span>Performance Metrics</span>
+                            </div>
+                            <div class="comparison-subtitle">Higher is better</div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="benchmarkChart"></canvas>
+                        </div>
+                        <div class="verdict-section">
+                            <div class="verdict-card">
+                                <div class="verdict-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="verdict-content">
+                                    <div class="verdict-title">Superior PSNR</div>
+                                    <div class="verdict-text">92.4 dB average</div>
+                                </div>
+                            </div>
+                            <div class="verdict-card">
+                                <div class="verdict-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="verdict-content">
+                                    <div class="verdict-title">Visual Quality</div>
+                                    <div class="verdict-text">Consistent &amp; Natural</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footer-text">
+                    <span class="footer-highlight">📈 Superior PSNR / SSIM / MSE</span> on standard benchmarks
+                </div>
+            </div>
+        </div>
+        <script>
+            const ctx = document.getElementById('benchmarkChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['HE', 'CLAHE', 'MSRCR', 'LIME', 'PACE'],
+                    datasets: [{
+                        label: 'PSNR (dB)',
+                        data: [78.5, 82.3, 85.7, 88.2, 92.4],
+                        backgroundColor: [
+                            'rgba(255, 255, 255, 0.1)',
+                            'rgba(255, 255, 255, 0.1)',
+                            'rgba(255, 255, 255, 0.1)',
+                            'rgba(255, 255, 255, 0.1)',
+                            'rgba(0, 168, 255, 0.3)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(0, 168, 255, 0.8)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>

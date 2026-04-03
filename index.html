@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PACE Research Presentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #00f2ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+            background: #050505;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: manipulation;
+        }
+
+        /* Auto-hide Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-100%);
+        }
+
+        .header.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Deck Container */
+        .deck-container {
+            display: flex;
+            width: 100vw;
+            height: 100dvh;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .deck-container::-webkit-scrollbar { display: none; }
+
+        .slide {
+            min-width: 100vw;
+            height: 100dvh;
+            scroll-snap-align: start;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+        }
+
+        .slide-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            display: block;
+        }
+
+        /* Progress Dots */
+        .progress {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            width: 28px;
+            border-radius: 12px;
+        }
+
+        /* Removed navigation arrows as per request */
+
+        /* Keyboard Shortcuts Overlay */
+        #keyboard-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        #keyboard-overlay.show {
+            display: flex;
+        }
+
+        .overlay-content {
+            background: #111;
+            padding: 40px 50px;
+            border-radius: 16px;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .overlay-content h2 {
+            margin-bottom: 25px;
+            color: #00f2ff;
+            font-size: 1.6rem;
+        }
+
+        .shortcuts {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+        }
+
+        .key {
+            background: #222;
+            padding: 6px 12px;
+            border-radius: 6px;
+            min-width: 32px;
+            text-align: center;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .desc {
+            color: #aaa;
+            flex: 1;
+        }
+
+        .option-row {
+            margin: 20px 0;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .close-btn {
+            margin-top: 15px;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .close-btn:hover {
+            background: #00d9e6;
+        }
+
+        /* Portrait Overlay (kept as you had) */
+        #portrait-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #portrait-overlay.show { display: flex; }
+
+        #portrait-overlay i {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: rotatePhone 2s infinite ease-in-out;
+        }
+
+        @keyframes rotatePhone {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+        }
+
+        #portrait-overlay h2 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        #portrait-overlay p {
+            font-size: 1.1rem;
+            max-width: 280px;
+            opacity: 0.9;
+        }
+
+        .enter-btn {
+            margin-top: 30px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            background: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Auto-hide Header -->
+    <div class="header" id="header">
+        <div class="title" id="presentation-title">PACE Research Presentation</div>
+        <div class="controls">
+            <div class="slide-counter">
+                <span id="current-slide">1</span> / <span id="total-slides">10</span>
+            </div>
+            <button onclick="toggleFullscreen()">
+                <i id="fullscreenIcon" class="fa-solid fa-maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Horizontal Scroll Deck -->
+    <div class="deck-container" id="deck"></div>
+
+    <!-- Progress Dots -->
+    <div class="progress" id="dots"></div>
+
+    <!-- Portrait Overlay -->
+    <div id="portrait-overlay">
+        <i class="fas fa-mobile-alt"></i>
+        <h2>Please Rotate Your Device</h2>
+        <p>For the best experience, please rotate your phone to landscape mode.</p>
+        <button class="enter-btn" onclick="enterLandscapeMode()">Enter Fullscreen Presentation</button>
+    </div>
+
+    <!-- Keyboard Shortcuts Overlay -->
+    <div id="keyboard-overlay">
+        <div class="overlay-content">
+            <h2>Keyboard Shortcuts</h2>
+            <div class="shortcuts">
+                <div class="shortcut-item">
+                    <span class="key">←</span>
+                    <span class="key">→</span>
+                    <span>Arrow Keys</span>
+                    <span class="desc">Previous / Next Slide</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="key">Space</span>
+                    <span class="desc">Next Slide</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="key">F</span>
+                    <span class="desc">Toggle Fullscreen</span>
+                </div>
+            </div>
+
+            <div class="option-row">
+                <label>
+                    <input type="checkbox" id="enable-mouse" />
+                    Enable mouse click to advance slides
+                </label>
+            </div>
+
+            <button id="close-overlay" class="close-btn">Got it (Press Enter)</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = [
+            "slides/slide1.html", "slides/slide2.html", "slides/slide3.html",
+            "slides/slide4.html", "slides/slide5.html", "slides/slide6.html",
+            "slides/slide7.html", "slides/slide8.html", "slides/slide9.html",
+            "slides/slide10.html"
+        ];
+
+        const deck = document.getElementById('deck');
+        const dotContainer = document.getElementById('dots');
+        const header = document.getElementById('header');
+        const keyboardOverlay = document.getElementById('keyboard-overlay');
+        const enableMouseCheckbox = document.getElementById('enable-mouse');
+        const closeOverlayBtn = document.getElementById('close-overlay');
+
+        let hideTimeout;
+        let currentIndex = 0;
+        let mouseClickEnabled = false;
+
+        // ================== TOUCH DETECTION ==================
+        function isTouchSupported() {
+            return (
+                'ontouchstart' in window ||
+                navigator.maxTouchPoints > 0 ||
+                navigator.msMaxTouchPoints > 0 ||
+                (window.DocumentTouch && document instanceof DocumentTouch)
+            );
+        }
+
+        // ================== OVERLAY LOGIC ==================
+        function shouldShowOverlay() {
+            if (isTouchSupported()) return false;
+
+            const lastShown = localStorage.getItem('presentation_overlay_last_shown');
+            if (!lastShown) return true;
+
+            const daysSince = (Date.now() - parseInt(lastShown)) / (1000 * 60 * 60 * 24);
+            // return true; // temp
+            return daysSince > 1; // Show again after 1 day
+        }
+
+        function showKeyboardOverlay() {
+            keyboardOverlay.classList.add('show');
+            const saved = localStorage.getItem('enable_mouse_click');
+            enableMouseCheckbox.checked = saved === 'true';
+        }
+
+        function closeKeyboardOverlay() {
+            mouseClickEnabled = enableMouseCheckbox.checked;
+            localStorage.setItem('enable_mouse_click', mouseClickEnabled);
+            localStorage.setItem('presentation_overlay_last_shown', Date.now());
+            keyboardOverlay.classList.remove('show');
+        }
+
+        // ================== CORE PRESENTATION FUNCTIONS ==================
+        slides.forEach(src => {
+            const slideDiv = document.createElement('div');
+            slideDiv.className = 'slide';
+            slideDiv.innerHTML = `<iframe class="slide-frame" src="${src}" allowfullscreen></iframe>`;
+            deck.appendChild(slideDiv);
+        });
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = `dot ${i === 0 ? 'active' : ''}`;
+            dot.onclick = () => goToSlide(i);
+            dotContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateUI(index) {
+            currentIndex = index;
+            document.getElementById('current-slide').textContent = index + 1;
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+            deck.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
+            updateUI(index);
+        }
+
+        function move(dir) {
+            goToSlide(currentIndex + dir);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                document.getElementById('fullscreenIcon').classList.replace('fa-maximize', 'fa-minimize');
+            } else {
+                document.exitFullscreen();
+                document.getElementById('fullscreenIcon').classList.replace('fa-minimize', 'fa-maximize');
+            }
+        }
+
+        function showHeader() {
+            header.classList.add('show');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => header.classList.remove('show'), 2800);
+        }
+
+        // Mouse click to advance (if enabled)
+        function setupMouseClick() {
+            deck.addEventListener('click', (e) => {
+                if (mouseClickEnabled && !e.target.closest('button') && !e.target.closest('.dot')) {
+                    move(1);
+                }
+            });
+        }
+
+        // ================== EVENT LISTENERS ==================
+        deck.addEventListener('scroll', () => {
+            const newIndex = Math.round(deck.scrollLeft / window.innerWidth);
+            if (newIndex !== currentIndex) updateUI(newIndex);
+            showHeader();
+        });
+
+        document.addEventListener('mousemove', showHeader);
+        document.addEventListener('touchstart', showHeader);
+        document.addEventListener('keydown', (e) => {
+            showHeader();
+            if (e.key === 'ArrowRight' || e.key === ' ') move(1);
+            if (e.key === 'ArrowLeft') move(-1);
+            if (e.key.toLowerCase() === 'f') toggleFullscreen();
+        });
+
+        // Overlay close
+        closeOverlayBtn.addEventListener('click', closeKeyboardOverlay);
+        document.addEventListener('keydown', (e) => {
+            if (keyboardOverlay.classList.contains('show') && (e.key === 'Enter' || e.key === 'Escape')) {
+                closeKeyboardOverlay();
+            }
+        });
+
+        // Portrait Overlay Functions (kept as you had)
+        function checkOrientation() {
+            const overlay = document.getElementById('portrait-overlay');
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isPortrait = window.innerWidth < window.innerHeight;
+
+            if (isMobile && isPortrait) {
+                overlay.classList.add('show');
+            } else {
+                overlay.classList.remove('show');
+            }
+        }
+
+        async function enterLandscapeMode() {
+            const overlay = document.getElementById('portrait-overlay');
+            try {
+                if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+                if (screen.orientation && typeof screen.orientation.lock === 'function') {
+                    await screen.orientation.lock('landscape');
+                }
+                overlay.classList.remove('show');
+            } catch (err) {
+                overlay.classList.remove('show');
+                alert("Please manually rotate your device to landscape for the best view.");
+            }
+        }
+
+        // ================== INITIALIZATION ==================
+        window.onload = () => {
+            // Create slides and dots already done above
+
+            document.getElementById('presentation-title').textContent = "PACE Research Presentation";
+            updateUI(0);
+
+            // Show keyboard overlay only for desktop users after 3 days
+            if (shouldShowOverlay()) {
+                showKeyboardOverlay();
+            } else {
+                mouseClickEnabled = localStorage.getItem('enable_mouse_click') === 'true';
+            }
+
+            setupMouseClick();
+            showHeader(); // Show header briefly at start
+
+            // Portrait check
+            checkOrientation();
+            window.addEventListener('resize', checkOrientation);
+
+            // Refresh iframes on orientation change
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    document.querySelectorAll('.slide-frame').forEach(frame => {
+                        frame.src = frame.src;
+                    });
+                }, 300);
+            });
+        };
+    </script>
+</body>
+</html>

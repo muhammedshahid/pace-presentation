@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>The Disconnect - PACE Research</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.08) 0%, transparent 70%);
+            top: -150px;
+            right: -100px;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            bottom: -100px;
+            left: -50px;
+            filter: blur(50px);
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            /* 20px */
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            /* 24px */
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #00a8ff;
+        }
+
+        .status-badge {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            top: 100px;
+            left: 60px;
+            right: 60px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 5;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            /* 32px */
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            /* 14px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .split-container {
+            display: flex;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .left-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .panel-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 107, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b00;
+            font-size: 0.875rem;
+            /* 14px */
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            /* 16px */
+            font-weight: 600;
+            color: white;
+        }
+
+        .panel-subtitle {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .comparison-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .comparison-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .comparison-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .comparison-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .comparison-fill.metrics {
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%);
+        }
+
+        .comparison-fill.perception {
+            background: linear-gradient(90deg, #00a8ff 0%, #0066ff 100%);
+        }
+
+        .right-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel-icon.right {
+            background: rgba(0, 168, 255, 0.1);
+            color: #00a8ff;
+        }
+
+        .insight-card {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: auto;
+        }
+
+        .insight-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            /* 18px */
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-highlight {
+            color: #00a8ff;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-2"></div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">PACE<span> Research</span></div>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-check-circle" style="margin-right: 4px;"></i>
+                Analysis Complete
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="title-section">
+                <div class="main-title">The <span class="highlight">Disconnect</span></div>
+                <div class="subtitle">
+                    The gap between metric optimization and perceptual quality: one side chases numbers, the other
+                    chases natural appearance.
+                </div>
+            </div>
+            <div class="split-container">
+                <div class="left-panel">
+                    <div class="panel-header">
+                        <div class="panel-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <div class="panel-title">Optimized for Metrics</div>
+                            <div class="panel-subtitle">PSNR, SSIM, NIQE focused</div>
+                        </div>
+                    </div>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-chart-bar" style="color: #ff6b00;"></i>
+                                <span>PSNR Score</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill metrics" style="width: 85%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">85% - High score</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-eye" style="color: #ff6b00;"></i>
+                                <span>SSIM Score</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill metrics" style="width: 92%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">92% - Very high</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-image" style="color: #ff6b00;"></i>
+                                <span>NIQE Score</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill metrics" style="width: 78%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">78% - Good</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-users" style="color: #ff6b00;"></i>
+                                <span>Perceptual</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill metrics" style="width: 45%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">45% - Low</div>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-text">
+                            <strong>Problem:</strong> Metrics say "better" but humans see "unnatural"
+                        </div>
+                    </div>
+                </div>
+                <div class="right-panel">
+                    <div class="panel-header">
+                        <div class="panel-icon right">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div>
+                            <div class="panel-title">Optimized for Perception</div>
+                            <div class="panel-subtitle">Human visual system focused</div>
+                        </div>
+                    </div>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-palette" style="color: #00a8ff;"></i>
+                                <span>Natural Contrast</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill perception" style="width: 95%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">95% - Excellent</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-balance-scale" style="color: #00a8ff;"></i>
+                                <span>Detail Preservation</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill perception" style="width: 88%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">88% - Very good</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-magic" style="color: #00a8ff;"></i>
+                                <span>Visual Quality</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill perception" style="width: 92%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">92% - Excellent</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">
+                                <i class="fas fa-heart" style="color: #00a8ff;"></i>
+                                <span>User Satisfaction</span>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill perception" style="width: 90%;"></div>
+                            </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.5);">90% - High</div>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-text">
+                            <strong>Solution:</strong> PACE bridges the gap between metrics and perception
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-text">
+                <span class="footer-highlight">That's the problem I wanted to solve.</span>
+            </div>
+        </div>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>

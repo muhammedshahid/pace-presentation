@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>How PACE Works - PACE Research</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --current-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--current-font-size);
+        }
+
+        body {
+            font-size: 1rem;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.1) 0%, transparent 70%);
+            top: -200px;
+            left: -100px;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            bottom: -100px;
+            right: -50px;
+            filter: blur(50px);
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            /* 20px */
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            /* 24px */
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #00a8ff;
+        }
+
+        .status-badge {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            /* 12px */
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .main-content {
+            position: absolute;
+            top: 100px;
+            left: 60px;
+            right: 60px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 5;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            /* 36px */
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(135deg, #00a8ff 0%, #0066ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            /* 14px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pipeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .pipeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .pipeline-title {
+            font-size: 1rem;
+            /* 16px */
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pipeline-subtitle {
+            font-size: 0.8125rem;
+            /* 13px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .pipeline-stages {
+            display: flex;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .stage-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 168, 255, 0.5) 50%, transparent 100%);
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .stage-number {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 600;
+        }
+
+        .stage-title {
+            font-size: 0.9375rem;
+            /* 15px */
+            font-weight: 600;
+            color: white;
+        }
+
+        .stage-desc {
+            font-size: 0.8125rem;
+            /* 13px */
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+            min-height: 38px;
+        }
+
+        .stage-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+
+        .detail-icon {
+            width: 16px;
+            height: 16px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00a8ff;
+            font-size: 0.625rem;
+            /* 10px */
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .detail-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .arrow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        .arrow-icon {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.25rem;
+            /* 20px */
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            /* 12px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-highlight {
+            color: #00a8ff;
+            font-weight: 500;
+        }
+
+        .process-flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .flow-step {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: rgba(0, 168, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(0, 168, 255, 0.1);
+        }
+
+        .flow-label {
+            font-size: 0.6875rem;
+            /* 11px */
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .flow-value {
+            font-size: 0.75rem;
+            /* 12px */
+            color: white;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-2"></div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">PACE <span>Research</span></div>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-cogs" style="margin-right: 4px;"></i>
+                Technical Details
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="title-section">
+                <div class="main-title">How <span class="highlight">PACE</span> Works</div>
+                <div class="subtitle">
+                    A three–stage pipeline designed for balanced, natural enhancement. Each stage optimizes specific
+                    aspects of image quality.
+                </div>
+            </div>
+            <div class="pipeline-container">
+                <div class="pipeline-header">
+                    <div class="pipeline-title">
+                        <i class="fas fa-project-diagram" style="color: #00a8ff;"></i>
+                        <span>Enhancement Pipeline</span>
+                    </div>
+                    <div class="pipeline-subtitle">3 stages • Balanced processing • Natural output</div>
+                </div>
+                <div class="pipeline-stages">
+                    <div class="stage-card">
+                        <div class="stage-header">
+                            <div class="stage-number">1</div>
+                            <div class="stage-title">Luminance Adaptation</div>
+                        </div>
+                        <div class="stage-desc">
+                            Model human brightness sensitivity, normalize exposure for context
+                        </div>
+                        <div class="stage-details">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="detail-text"><strong>Human Brightness Model:</strong> Simulates HVS
+                                    sensitivity to light</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-adjust"></i>
+                                </div>
+                                <div class="detail-text"><strong>Exposure Normalization:</strong> Adapts to scene
+                                    context</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="detail-text"><strong>Context Awareness:</strong> Analyzes global and local
+                                    brightness</div>
+                            </div>
+                        </div>
+                        <div class="process-flow">
+                            <div class="flow-step">
+                                <div class="flow-label">Input</div>
+                                <div class="flow-value">Raw Image</div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="flow-label">Output</div>
+                                <div class="flow-value">Normalized</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow-container">
+                        <div class="arrow-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="stage-card">
+                        <div class="stage-header">
+                            <div class="stage-number">2</div>
+                            <div class="stage-title">Structural Preservation</div>
+                        </div>
+                        <div class="stage-desc">
+                            Edge–aware guidance maintains geometry and textures
+                        </div>
+                        <div class="stage-details">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-border-style"></i>
+                                </div>
+                                <div class="detail-text"><strong>Edge Detection:</strong> Preserves sharp edges and
+                                    contours</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-shapes"></i>
+                                </div>
+                                <div class="detail-text"><strong>Geometry Maintenance:</strong> Keeps original structure
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-texture"></i>
+                                </div>
+                                <div class="detail-text"><strong>Texture Preservation:</strong> Maintains fine details
+                                </div>
+                            </div>
+                        </div>
+                        <div class="process-flow">
+                            <div class="flow-step">
+                                <div class="flow-label">Input</div>
+                                <div class="flow-value">Normalized</div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="flow-label">Output</div>
+                                <div class="flow-value">Structured</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow-container">
+                        <div class="arrow-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="stage-card">
+                        <div class="stage-header">
+                            <div class="stage-number">3</div>
+                            <div class="stage-title">Perceptual Modulation</div>
+                        </div>
+                        <div class="stage-desc">
+                            Contrast/tonal curves tuned to HVS (local + global balance)
+                        </div>
+                        <div class="stage-details">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-sliders-h"></i>
+                                </div>
+                                <div class="detail-text"><strong>Local Contrast:</strong> Enhances details per region
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="detail-text"><strong>Global Balance:</strong> Maintains overall harmony
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-magic"></i>
+                                </div>
+                                <div class="detail-text"><strong>Tonal Curves:</strong> Optimized for HVS</div>
+                            </div>
+                        </div>
+                        <div class="process-flow">
+                            <div class="flow-step">
+                                <div class="flow-label">Input</div>
+                                <div class="flow-value">Structured</div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="flow-label">Output</div>
+                                <div class="flow-value">Enhanced</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footer-text">
+                    <span class="footer-highlight">⚙️ Designed for balanced, natural enhancement</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/scaling.js"></script>
+</body>
+
+</html>
